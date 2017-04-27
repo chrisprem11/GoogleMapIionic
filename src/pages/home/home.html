@@ -1,9 +1,56 @@
-<ion-header>
+<ion-header color="secondary">
   <ion-navbar>
     <ion-title>Google Map</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
-  Search Or Add Places !
+  <ion-label color="primary">Name</ion-label>
+  <ion-input id="placeName" placeholder="Type a place name" [(ngModel)]="name"></ion-input><hr />
+  <!-- <ion-input id="placeName" placeholder="Type a place name" [(ngModel)]="name2"></ion-input><hr />
+  <button ion-fab (click)="demo(name2)">Find</button> -->
+  <sebm-google-map
+  [latitude]="lat"
+  [longitude]="lng"
+  [zoom]="zoom"
+  [disableDefaultUI]="false"
+  [zoomControl]="false"
+  (mapClick)="mapClicked($event,name)">
+
+  <sebm-google-map-marker
+      *ngFor="let m of markers; let i = index"
+      (markerClick)="clickedMarker(m.label, i)"
+      [latitude]="m.lat"
+      [longitude]="m.lng"
+      [label]="m.label"
+      [markerDraggable]="m.draggable"
+      (dragEnd)="markerDragEnd(m, $event)">
+
+    <sebm-google-map-info-window>
+      <strong>InfoWindow content</strong>
+    </sebm-google-map-info-window>
+
+  </sebm-google-map-marker>
+
+  <sebm-google-map-circle [latitude]="lat + 0.3" [longitude]="lng"
+      [radius]="5000"
+      [fillColor]="'red'"
+      [circleDraggable]="true"
+      [editable]="true">
+  </sebm-google-map-circle>
+</sebm-google-map><hr />
+<ion-row>
+  <ion-col ion-col-2></ion-col>
+  <ion-col col-7>
+    <ion-label color="primary"><h5>What are you looking for ?</h5></ion-label>
+    <ion-input placeholder="Type a place name" [(ngModel)]="name"></ion-input>
+  </ion-col>
+  <ion-col col-3>
+    <br /><br />
+    <ion-fab>
+      <button ion-fab (click)="searchPlace(name)">Search</button>
+   </ion-fab>
+  </ion-col>
+</ion-row>
+<div #map id="map" ></div><br />
 </ion-content>
